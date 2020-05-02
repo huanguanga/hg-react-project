@@ -3,7 +3,7 @@ import "./css/Login.less"
 import login from "./images/logo.png"
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons'; //引入字体图标,每个字体图标有自己的名字
-import { reqLogin } from "../../api";
+import { reqLogin } from "@/api";
 
 export default class Login extends Component {
 
