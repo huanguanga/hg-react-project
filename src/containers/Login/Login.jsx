@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from "react-redux";
+import { saveUserInfo } from "@/redux/actions/login";
 import "./css/Login.less"
 import login from "./images/logo.png"
 import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons'; //引入字体图标,每个字体图标有自己的名字
 import { reqLogin } from "@/api";
 
-export default class Login extends Component {
+class Login extends Component {
 
   //表单提交且验证通过的回调
   onFinish = async values => {
@@ -13,6 +15,7 @@ export default class Login extends Component {
     const {status,data,msg} = result
     if (status === 0) {
       message.success('登录成功')
+      this.props.saveUserInfo(data)//向redux和local中保存数据,
       this.props.history.replace('/admin')
     }else{
       message.error(msg)
@@ -69,3 +72,8 @@ export default class Login extends Component {
     )
   }
 }
+
+export default connect(
+  () =>{},
+  {saveUserInfo}
+)(Login)
