@@ -1,18 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import { saveUserInfo } from "@/redux/actions/login";
 import "./css/Login.less"
 import login from "./images/logo.png"
 import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons'; //引入字体图标,每个字体图标有自己的名字
 import { reqLogin } from "@/api";
-import Check from "@/containers/Hoc/Check";
 
-@connect(
-  (state) =>({isLogin:state.userInfo.isLogin}),
-  {saveUserInfo}
-)
-@Check  //由于connect装饰的是Check装饰过的Login,   所以Login不是路由组件,saveUserInfo传递给了Check,所以在login中想要使用saveUserInfo需要Check传给login(在check高阶组件中传递)
 class Login extends Component {
 
   //表单提交且验证通过的回调
@@ -41,7 +36,7 @@ class Login extends Component {
     else return Promise.resolve()
   }
   render() {
-    // if (this.props.isLogin) return <Redirect to="/admin"/>  //这里不用this.props.history,因为它适合在非render函数中跳转,render中应该用重定向
+    if (this.props.isLogin) return <Redirect to="/admin"/>  //这里不用this.props.history,因为它适合在非render函数中跳转,render中应该用重定向
     return (
       <div className="login">
         <header>
@@ -80,4 +75,7 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default connect(
+  (state) =>({isLogin:state.userInfo.isLogin}),
+  {saveUserInfo}
+)(Login)

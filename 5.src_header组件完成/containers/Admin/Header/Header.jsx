@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Button,Modal } from "antd";
-import dayjs from "dayjs";
 import screenfull from "screenfull";
 import {
 	FullscreenOutlined,
@@ -11,19 +10,12 @@ import { connect } from "react-redux";
 import { deleteUserInfo } from "@/redux/actions/login";
 import  "./css/header.less";
 import demo from "./images/demo.jpg"
-import { reqWeather } from "@/api/index";
 
 const {confirm} = Modal 
 
-@connect(
-  (state)=>({username:state.userInfo.user.username}),
-  {deleteUserInfo}
-)
 class Header extends Component {
   state={
-    isFull:false,
-    time:dayjs().format('YYYY年MM月DD日 HH:mm:ss '),
-    weatherData:{} //天气信息
+    isFull:false
   }
   logout = ()=>{//退出登录
     confirm({
@@ -40,26 +32,13 @@ class Header extends Component {
   fullScreen = ()=>{//切换 全屏/非全屏
     screenfull.toggle()
   }
-   getWeather = async()=>{//获取天气信息
-    const result = await reqWeather()
-    const {dayPictureUrl,weather,temperature} = result
-    this.setState({weatherData:{dayPictureUrl,weather,temperature}})
-  }
   componentDidMount(){
     screenfull.onchange(()=>{ //检测屏幕变化
       let {isFull} = this.state
       this.setState({isFull:!isFull})
     })
-    this.timer = setInterval(() => {//时间的定时器
-      this.setState({time:dayjs().format('YYYY年MM月DD日 HH:mm:ss ')})
-    }, 1000);
-    this.getWeather()//获取天气信息
-  }
-  componentWillUnmount(){
-    clearInterval(this.timer)
   }
   render() {
-    const {weatherData} = this.state
     return (
       <div className="header">
         <div className="header-top">
@@ -74,10 +53,10 @@ class Header extends Component {
             <span>首页</span>
           </div>
           <div className="bottom-right">
-            <span>{this.state.time}</span>
-            <img src={demo} alt={weatherData.dayPictureUrl}/>
-            <span>{weatherData.weather}</span>
-            <span>{weatherData.temperature}</span>
+            <span>2020年5月4日 00:00:00</span>
+            <img src={demo} alt=""/>
+            <span>多云转晴</span>
+            <span>温度：0~15℃</span>
           </div>
           
         </div>
@@ -85,4 +64,7 @@ class Header extends Component {
     )
   }
 }
-export default Header
+export default connect(
+  (state)=>({username:state.userInfo.user.username}),
+  {deleteUserInfo}
+)(Header)
