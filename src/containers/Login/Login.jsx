@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { saveUserInfo } from "@/redux/actions/login";
 import "./css/Login.less"
-import login from "./images/logo.png"
+import login from "@/assets/images/logo.png"
 import { Form, Input, Button,message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons'; //引入字体图标,每个字体图标有自己的名字
 import { reqLogin } from "@/api";
