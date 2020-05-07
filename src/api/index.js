@@ -21,3 +21,5 @@ export const reqWeather = ()=>{
   })
   
 }
+//请求商品分类数据
+export const reqCategoryList = ()=> axios.get('/manage/category/list')

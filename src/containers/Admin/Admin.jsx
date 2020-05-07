@@ -35,7 +35,7 @@ class Admin extends Component {
         </Sider>
         <Layout>
           <Header/>
-          <Content>
+          <Content className="admin-content">
             <Switch>
               <Route path='/admin/home' component={Home}/>
 							<Route path="/admin/prod_about/product" component={Product}/>
@@ -48,7 +48,7 @@ class Admin extends Component {
               <Redirect to="/admin/home"/>
             </Switch>
           </Content>
-          <Footer>footer</Footer>
+          <Footer className="admin-footer">推荐使用谷歌浏览器</Footer>
         </Layout>
       </Layout>
     )
