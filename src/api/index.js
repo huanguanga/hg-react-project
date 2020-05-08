@@ -23,3 +23,10 @@ export const reqWeather = ()=>{
 }
 //请求商品分类数据
 export const reqCategoryList = ()=> axios.get('/manage/category/list')
+
+//获取商品列表
+export const reqProductList = (pageNum,pageSize) => axios.get('/manage/product/list',{params:{pageNum,pageSize}})
+//搜索商品列表
+export const reqSerachProduct = (serachType,keyWord,pageNum,pageSize)=>{
+  return axios.get('/manage/product/search',{params:{[serachType]:keyWord,pageNum,pageSize}})
+}
