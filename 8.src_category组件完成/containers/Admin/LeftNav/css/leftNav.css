@@ -1,0 +1,16 @@
+.left-nav {
+  color: white;
+}
+.left-nav .nav-top {
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+.left-nav .nav-top img {
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+}
+.left-nav .nav-top span {
+  font-size: 20px;
+}
