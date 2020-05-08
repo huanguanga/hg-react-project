@@ -23,6 +23,10 @@ export const reqWeather = ()=>{
 }
 //请求商品分类数据
 export const reqCategoryList = ()=> axios.get('/manage/category/list')
+//添加商品分类
+export const reqAddCategoryList = categoryName=> axios.post('/manage/category/add',{categoryName})
+//修改商品分类
+export const reqUpdateCategoryList = (categoryId,categoryName)=> axios.post('/manage/category/update',{categoryId,categoryName})
 
 //获取商品列表
 export const reqProductList = (pageNum,pageSize) => axios.get('/manage/product/list',{params:{pageNum,pageSize}})
