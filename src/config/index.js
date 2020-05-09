@@ -2,3 +2,4 @@
 export const CITY = '张家口'  //请求天气的城市参数
 export const WEATHER_AK = '3p49MVra6urFRGOT9s8UBWr2' //请求天气的ak
 export const PAGESIZE = 4  //每页展示多少条数据
+export const IMAGE_BASE_URL = 	'http://localhost:5000/upload/' //图片公共路径

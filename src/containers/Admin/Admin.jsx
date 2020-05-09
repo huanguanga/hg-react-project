@@ -14,6 +14,8 @@ import User from './User/User'
 import Line from './Line/Line'
 import Bar from './Bar/Bar'
 import Pie from './Pie/Pie'
+import AddUpdate from "./Product/AddUpdate/AddUpdate";
+import Detail from "./Product/Detail/Detail";
 
 const {Footer,Sider,Content} = Layout 
 
@@ -38,13 +40,16 @@ class Admin extends Component {
           <Content className="admin-content">
             <Switch>
               <Route path='/admin/home' component={Home}/>
-							<Route path="/admin/prod_about/product" component={Product}/>
+							<Route path="/admin/prod_about/product" exact component={Product}/>
               <Route path="/admin/prod_about/category" component={Category}/>
 							<Route path="/admin/user" component={User}/>
 							<Route path="/admin/role" component={Role}/>
 							<Route path="/admin/charts/bar" component={Bar}/>
 							<Route path="/admin/charts/line" component={Line}/>
 							<Route path="/admin/charts/pie" component={Pie}/>
+							<Route path="/admin/prod_about/product/add" component={AddUpdate}/>
+							<Route path="/admin/prod_about/product/detail/:id" component={Detail}/>
+							<Route path="/admin/prod_about/product/update/:id" component={AddUpdate}/>
               <Redirect to="/admin/home"/>
             </Switch>
           </Content>

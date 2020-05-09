@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Card,Button,Select,Input,Table,message } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { reqProductList,reqSerachProduct } from "@/api";
+import { reqProductList,reqSerachProduct,reqUpdateStatus } from "@/api";
 import { PAGESIZE } from "@/config";
 
 
@@ -14,10 +14,24 @@ export default class Product extends Component {
 		total:0,//数据总数
 		pageNum:0, //当前页码
 		serachType:'productName', //搜索的类型
-		keyWord:''  //搜索关键字
+		keyWord:'',  //搜索关键字
+		isLoading:true // 是否加载中
+	}
+
+	updateStatus = async(productId,currentStatus)=>{  //商品上架下架的回调
+		currentStatus = currentStatus === 1? 2 : 1
+		const result = await reqUpdateStatus(productId,currentStatus)
+		const {status,msg} = result
+		if (status === 0) {
+			message.success(currentStatus === 1? '上架成功':'下架成功')
+			this.getProductList(this.state.pageNum)
+		}else{
+			message.error(msg)
+		}
 	}
 
 	getProductList = async (pageNum = 1)=>{  //请求商品列表和搜索商品列表
+		this.setState({isLoading:true})
 		let result
 		if (this.isSearch) {  //搜索的情况
 			const {serachType,keyWord} = this.state
@@ -28,8 +42,10 @@ export default class Product extends Component {
 		const {status,data,msg} = result
 		if (status === 0) {
 			this.setState({productList:data.list,total:data.total,pageNum:data.pageNum})
+			this.setState({isLoading:false})  //加载完成改变加载标志的状态
 		}else{
 			message.error(msg)
+			this.setState({isLoading:false})
 		}
 	}
 
@@ -42,9 +58,9 @@ export default class Product extends Component {
 	}
 
 	render() {
-		const dataSource = this.state.productList
+		const dataSource = this.state.productList  //表格数据源
 		
-		const columns = [
+		const columns = [  //表格列配置
 			{
 				title: '商品名称',
 				dataIndex: 'name',
@@ -62,12 +78,18 @@ export default class Product extends Component {
 			},
 			{
 				title: '状态',
-				dataIndex: 'status',
+				// dataIndex: 'status',
 				align:'center',
-				render:(status)=>{
+				render:(productObj)=>{
+					const {status,_id} = productObj
 					return (
 						<div>
-							<Button type={status === 1? 'danger':'primary'}>{status === 1? '下架':'上架'}</Button><br/>
+							<Button 
+								type={status === 1? 'danger':'primary'}
+								onClick={()=>{this.updateStatus(_id,status)}}
+							>
+								{status === 1? '下架':'上架'}
+							</Button><br/>
 							<span>{status === 1? '在售':'已停售'}</span>
 						</div>
 					)
@@ -76,12 +98,12 @@ export default class Product extends Component {
 			},
 			{
 				title: '操作',
-				// dataIndex: 'address',
+				dataIndex: '_id',
 				align:'center',
-				render:()=> (
+				render:(id)=> (
 					<div>
-						<Button type="link">详情</Button><br/>
-						<Button type="link">修改</Button>
+						<Button type="link" onClick={()=>{this.props.history.push(`/admin/prod_about/product/detail/${id}`)}}>详情</Button><br/>
+						<Button type="link" onClick={()=>{this.props.history.push(`/admin/prod_about/product/update/${id}`)}}>修改</Button>
 					</div>
 				),
 				key: 'address',
@@ -112,12 +134,13 @@ export default class Product extends Component {
 						</Button>
 					</div>
 				} 
-				extra={<Button type="primary">添加商品</Button>}
+				extra={<Button type="primary" onClick={()=>{this.props.history.push('/admin/prod_about/product/add')}}>添加商品</Button>}
 			>
 				<Table 
 					dataSource={dataSource} 
 					columns={columns} 
 					rowKey='_id' 
+					loading={this.state.isLoading}
 					pagination={{
 						total:this.state.total, //数据总数
 						pageSize:PAGESIZE, //每页条数

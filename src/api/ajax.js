@@ -15,7 +15,7 @@ import store from "@/redux/store";
 import { deleteUserInfo } from "@/redux/actions/login";
 
 //配置请求的基础路径和超时时间    此处用了defaults方式,也可以使用axios.create()的方式,这种方式的优点就是可以写多个
-axios.defaults.baseURL= 'http://localhost:3000'
+axios.defaults.baseURL= '/api'
 axios.defaults.timeout = 2000
 
 //请求拦截器(拦截器就是将配置对象做一个处理)

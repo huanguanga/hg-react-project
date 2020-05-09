@@ -41,6 +41,7 @@ class LeftNav extends Component {
     const {pathname} = this.props.location
     let currentKey = pathname.split('/').slice(-1)[0]
     if (currentKey === 'admin') currentKey = 'home' //此处是为了解决重新登陆首页标题丢失的情况,(出现这种情况的原因和之前重新登陆不自动首页导航项高亮的原理一样,都是由于先跳转到了admin路径又重定向到了admin/home路径下)
+    if (pathname.indexOf('product') !== -1 ) currentKey = 'product'  //解决跳转product子路由tital不显示的问题
     let title = ''
     menus.forEach((menuObj)=>{
       if (menuObj.children instanceof Array) {
@@ -62,7 +63,8 @@ class LeftNav extends Component {
   render() {
     const {pathname} = this.props.location
     const openKey = pathname.split('/')  //路径拆分后的数组(这个数组可以直接传给默认展开菜单,底层会进行对比)
-    const seletedKey = openKey.slice(-1)  //要选中的菜单
+    let seletedKey = openKey.slice(-1)  //要选中的菜单
+    if (openKey.indexOf('product') !== -1) seletedKey = 'product' //去product的子路由product也会高亮
     return (
       <div className="left-nav">
         <div className="nav-top">

@@ -34,3 +34,7 @@ export const reqProductList = (pageNum,pageSize) => axios.get('/manage/product/l
 export const reqSerachProduct = (serachType,keyWord,pageNum,pageSize)=>{
   return axios.get('/manage/product/search',{params:{[serachType]:keyWord,pageNum,pageSize}})
 }
+//商品上架和下架处理
+export const reqUpdateStatus = (productId,status)=> axios.post('/manage/product/updateStatus',{productId,status})
+//依据商品ID获取商品详情
+export const reqProductDetail = (productId) => axios.get('/manage/product/info',{params:{productId}})
